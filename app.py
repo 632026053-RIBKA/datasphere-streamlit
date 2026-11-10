@@ -30,144 +30,256 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+
 # ==========================================
-# CUSTOM CSS
+# CUSTOM CSS - DATASPHERE PROFESSIONAL
 # ==========================================
+
 st.markdown("""
 <style>
-    .stApp {
-        background: linear-gradient(135deg, #0b1020, #111a33);
-        color: #f1f5f9;
-    }
 
-    [data-testid="stSidebar"] {
-        background: #10182b;
-        border-right: 1px solid #263653;
-    }
+/* IMPORT FONT */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-    .hero {
-        background: linear-gradient(120deg, #172554, #312e81, #164e63);
-        padding: 38px;
-        border-radius: 20px;
-        border: 1px solid #3b82f6;
-        margin-bottom: 25px;
-    }
-
-    .hero h1 {
-        color: white;
-        font-size: 38px;
-        margin-bottom: 10px;
-    }
-
-    .hero p {
-        color: #dbeafe;
-        font-size: 16px;
-    }
-
-    .card {
-        background: #17233b;
-        border: 1px solid #293d5c;
-        border-radius: 16px;
-        padding: 22px;
-        min-height: 170px;
-        margin-bottom: 15px;
-    }
-
-    .card h3 {
-        color: #67e8f9;
-        font-size: 19px;
-    }
-
-    .card p {
-        color: #cbd5e1;
-        font-size: 14px;
-    }
-
-    .section-title {
-        color: #e2e8f0;
-        font-size: 25px;
-        font-weight: 700;
-        margin-top: 25px;
-        margin-bottom: 15px;
-    }
-
-    #MainMenu, footer {
-        visibility: hidden;
-    }
-
-/* PERBAIKAN KONTRAS WARNA TEKS */
-.stApp {
-    color: #f1f5f9 !important;
+/* GLOBAL */
+html, body, [class*="css"], button, input, textarea {
+    font-family: 'Inter', 'Segoe UI', sans-serif !important;
 }
 
-.stApp p,
-.stApp li,
-.stApp label,
-.stApp .stMarkdown {
-    color: #e2e8f0 !important;
+.stApp {
+    background: linear-gradient(135deg, #0b1020, #111a33);
+    color: #f1f5f9;
+    font-size: 17px;
+}
+
+/* MAIN CONTENT */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+    max-width: 1450px;
 }
 
 /* SIDEBAR */
 [data-testid="stSidebar"] {
-    background-color: #10182b !important;
+    background: #10182b !important;
+    border-right: 1px solid #263653;
 }
 
 [data-testid="stSidebar"] p,
 [data-testid="stSidebar"] label,
-[data-testid="stSidebar"] span,
-[data-testid="stSidebar"] .stMarkdown {
+[data-testid="stSidebar"] span {
     color: #f1f5f9 !important;
+    font-size: 16px !important;
+    font-weight: 500;
 }
 
-/* MENU NAVIGASI */
-[data-testid="stSidebar"] [role="radiogroup"] label {
-    color: #f1f5f9 !important;
-}
-
-/* KOTAK INFORMASI */
-[data-testid="stAlert"] {
-    background-color: #1e3a5f !important;
-}
-
-[data-testid="stAlert"] p {
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
     color: #ffffff !important;
+    font-weight: 800 !important;
 }
 
-/* KARTU DASHBOARD */
-.card p {
-    color: #e2e8f0 !important;
+/* HERO SECTION */
+.hero {
+    background: linear-gradient(120deg, #172554, #312e81, #164e63);
+    padding: 42px;
+    border-radius: 20px;
+    border: 1px solid #3b82f6;
+    margin-bottom: 28px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
 }
 
-.card h3 {
-    color: #67e8f9 !important;
-}
-
-/* JUDUL */
-h1, h2, h3, h4 {
-    color: #ffffff !important;
-}
-
-/* HERO */
 .hero h1 {
     color: #ffffff !important;
+    font-size: 42px !important;
+    font-weight: 800 !important;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
 }
 
 .hero p {
     color: #dbeafe !important;
+    font-size: 18px !important;
+    line-height: 1.8;
 }
 
-/* METRIK */
+/* DASHBOARD CARDS */
+.card {
+    background: #17233b;
+    border: 1px solid #293d5c;
+    border-radius: 18px;
+    padding: 25px;
+    min-height: 180px;
+    margin-bottom: 18px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.15);
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    border-color: #38bdf8;
+    transform: translateY(-3px);
+}
+
+.card h3 {
+    color: #67e8f9 !important;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    margin-bottom: 12px;
+}
+
+.card p {
+    color: #cbd5e1 !important;
+    font-size: 16px !important;
+    line-height: 1.8;
+}
+
+/* SECTION TITLE */
+.section-title {
+    color: #ffffff !important;
+    font-size: 28px !important;
+    font-weight: 800 !important;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+/* GENERAL HEADINGS */
+h1 {
+    color: #ffffff !important;
+    font-size: 38px !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.7px;
+}
+
+h2 {
+    color: #ffffff !important;
+    font-size: 29px !important;
+    font-weight: 700 !important;
+}
+
+h3 {
+    color: #ffffff !important;
+    font-size: 23px !important;
+    font-weight: 700 !important;
+}
+
+h4 {
+    color: #e2e8f0 !important;
+    font-size: 19px !important;
+    font-weight: 600 !important;
+}
+
+/* PARAGRAPH */
+.stMarkdown p,
+.stMarkdown li {
+    color: #e2e8f0 !important;
+    font-size: 17px !important;
+    line-height: 1.8 !important;
+}
+
+
+/* ==========================================
+   ALERT - PERBAIKAN KONTRAS TOTAL
+========================================== */
+
+[data-testid="stAlert"] {
+    border-radius: 12px !important;
+    border: 1px solid #38bdf8 !important;
+}
+
+/* Semua tulisan dalam notifikasi */
+[data-testid="stAlert"] p,
+[data-testid="stAlert"] span,
+[data-testid="stAlert"] div,
+[data-testid="stAlert"] li {
+    color: #172033 !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    line-height: 1.7 !important;
+}
+
+/* Pesan success */
+[data-testid="stAlert"][data-baseweb="notification"] {
+    color: #172033 !important;
+}
+
+/* Ikon notifikasi */
+[data-testid="stAlert"] svg {
+    color: #172033 !important;
+    fill: currentColor;
+}
+
+[data-testid="stAlert"] p {
+    color: #ffffff !important;
+    font-size: 16px !important;
+    font-weight: 600;
+}
+
+/* METRICS */
+[data-testid="stMetric"] {
+    background: #17233b;
+    padding: 18px;
+    border-radius: 14px;
+    border: 1px solid #293d5c;
+}
+
 [data-testid="stMetricLabel"] {
     color: #cbd5e1 !important;
+    font-size: 16px !important;
+    font-weight: 600;
 }
 
 [data-testid="stMetricValue"] {
     color: #67e8f9 !important;
+    font-size: 32px !important;
+    font-weight: 800 !important;
 }
 
-/* HEADER STREAMLIT */
+/* INPUT */
+.stTextInput label,
+.stSelectbox label,
+.stNumberInput label,
+.stFileUploader label,
+.stTextArea label {
+    color: #f1f5f9 !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+}
+
+/* BUTTON */
+.stButton > button {
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    padding: 10px 20px;
+    transition: 0.2s ease;
+}
+
+.stButton > button:hover {
+    border-color: #67e8f9;
+    color: #67e8f9;
+}
+
+/* DATAFRAME */
+[data-testid="stDataFrame"] {
+    border: 1px solid #293d5c;
+    border-radius: 12px;
+}
+
+/* DIVIDER */
+hr {
+    border-color: #334155 !important;
+}
+
+/* HEADER */
 [data-testid="stHeader"] {
     background-color: #0b1020 !important;
+}
+
+/* HIDE DEFAULT MENU */
+#MainMenu, footer {
+    visibility: hidden;
 }
 
 </style>
