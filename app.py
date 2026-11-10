@@ -282,6 +282,40 @@ hr {
     visibility: hidden;
 }
 
+/* ==========================================
+   FIX TEKS DAFTAR COLLECTION
+========================================== */
+
+/* Deskripsi collection */
+[data-testid="stCaptionContainer"],
+[data-testid="stCaptionContainer"] p {
+    color: #CBD5E1 !important;
+    -webkit-text-fill-color: #CBD5E1 !important;
+    font-size: 16px !important;
+}
+
+/* Label radio button */
+[data-testid="stRadio"] label,
+[data-testid="stRadio"] label p,
+[data-testid="stRadio"] label span,
+[data-testid="stRadio"] [data-testid="stMarkdownContainer"] {
+    color: #F1F5F9 !important;
+    -webkit-text-fill-color: #F1F5F9 !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+}
+
+/* Teks pilihan student_data dan comments */
+[data-testid="stRadio"] [role="radiogroup"] label * {
+    color: #F1F5F9 !important;
+    -webkit-text-fill-color: #F1F5F9 !important;
+}
+
+/* Teks seluruh widget radio */
+[data-testid="stRadio"] {
+    color: #F1F5F9 !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
