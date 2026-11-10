@@ -4,7 +4,8 @@ import streamlit as st
 import pandas as pd
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
-
+import uuid
+from datetime import datetime, timezone
 
 # ==========================================
 # KONEKSI MONGODB
@@ -306,6 +307,31 @@ hr {
     color: #F1F5F9 !important;
 }
 
+/* ==========================================
+   SIDEBAR NAVIGATION - IMPROVED CONTRAST
+========================================== */
+
+[data-testid="stSidebar"] {
+    background: #071426 !important;
+}
+
+/* Tombol navigasi */
+[data-testid="stSidebar"] [data-testid="stButton"] button {
+    background: #142b45 !important;
+    color: #ffffff !important;
+    border: 1px solid #294766 !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    min-height: 44px !important;
+}
+
+/* Hover */
+[data-testid="stSidebar"] [data-testid="stButton"] button:hover {
+    background: #164e70 !important;
+    border-color: #38bdf8 !important;
+    color: #ffffff !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -467,7 +493,74 @@ elif menu == "📂 Dataset Explorer":
 
     if uploaded_file is not None:
         df = pd.read_csv(uploaded_file, sep=";")
+
         st.session_state["dataset"] = df
+        st.session_state["dataset_name"] = uploaded_file.name
+
+    st.divider()
+    st.subheader("📥 Muat Dataset Tersimpan")
+
+    try:
+        client = koneksi_mongodb()
+        db = client["datasphere"]
+
+        metadata_collection = db["dataset_metadata"]
+        records_collection = db["dataset_records"]
+
+        daftar_dataset = list(
+            metadata_collection.find().sort("created_at", -1)
+        )
+
+        if daftar_dataset:
+
+            pilihan_dataset = {
+                (
+                    f"{item.get('dataset_name', 'Tanpa nama')} | "
+                    f"{item.get('row_count', 0)} baris | "
+                    f"ID: {item['dataset_id'][:8]}"
+                ): item["dataset_id"]
+                for item in daftar_dataset
+            }
+
+            nama_pilihan = st.selectbox(
+                "Pilih dataset yang ingin dimuat",
+                list(pilihan_dataset.keys())
+            )
+
+            if st.button("📂 Muat Dataset"):
+                dataset_id = pilihan_dataset[nama_pilihan]
+
+                data = list(
+                    records_collection.find(
+                        {"dataset_id": dataset_id},
+                        {"_id": 0, "dataset_id": 0, "row_index": 0}
+                    ).sort("row_index", 1)
+                )
+
+                if data:
+                    st.session_state["dataset"] = pd.DataFrame(data)
+
+                    metadata_terpilih = next(
+                        item for item in daftar_dataset
+                        if item["dataset_id"] == dataset_id
+                    )
+
+                    st.session_state["dataset_name"] = (
+                        metadata_terpilih.get(
+                            "dataset_name", "Dataset tanpa nama"
+                        )
+                    )
+
+                    st.success("Dataset berhasil dimuat!")
+                    st.rerun()
+                else:
+                    st.warning("Data tidak ditemukan.")
+
+        else:
+            st.info("Belum ada dataset yang tersimpan di MongoDB.")
+
+    except Exception as e:
+        st.error(f"Gagal memuat dataset: {e}")
 
     if "dataset" in st.session_state:
 
@@ -954,33 +1047,67 @@ elif menu == "🗄️ MongoDB Hub":
 
         # Menyimpan dataset
         st.divider()
+
+
         st.subheader("💾 Simpan Dataset ke MongoDB")
 
         if "dataset" in st.session_state:
-
             df = st.session_state["dataset"]
 
             st.write(f"Jumlah data: {len(df)} baris")
 
             if st.button("💾 Simpan Dataset ke MongoDB"):
 
-                data = df.to_dict(orient="records")
+                dataset_id = str(uuid.uuid4())
+                records_collection = db["dataset_records"]
 
-                db["student_data"].delete_many({})
+                try:
+                    metadata_collection = db["dataset_metadata"]
 
-                if data:
-                    db["student_data"].insert_many(data)
+                    clean_df = df.astype(object).where(
+                        pd.notna(df), None
+                    )
+                    records = clean_df.to_dict(orient="records")
 
-                st.success(
-                    f"Berhasil menyimpan {len(data)} data siswa ke MongoDB!"
-                )
+                    for index, record in enumerate(records):
+                        record["dataset_id"] = dataset_id
+                        record["row_index"] = index
+
+                        for key, value in record.items():
+                            if hasattr(value, "item"):
+                                record[key] = value.item()
+
+                    for start in range(0, len(records), 1000):
+                        records_collection.insert_many(
+                            records[start:start + 1000]
+                        )
+
+                    metadata_collection.insert_one({
+                        "dataset_id": dataset_id,
+                        "dataset_name": st.session_state.get(
+                            "dataset_name", "Dataset tanpa nama"
+                        ),
+                        "created_at": datetime.now(timezone.utc),
+                        "row_count": len(df),
+                        "column_count": len(df.columns),
+                        "columns": [str(col) for col in df.columns]
+                    })
+
+                    st.success(
+                        "Dataset berhasil disimpan secara permanen!"
+                    )
+
+                except Exception as e:
+                    records_collection.delete_many(
+                        {"dataset_id": dataset_id}
+                    )
+                    st.error(f"Gagal menyimpan dataset: {e}")
 
         else:
             st.warning(
                 "Silakan unggah dataset terlebih dahulu melalui Dataset Explorer."
             )
 
-        
         # Menampilkan collection yang interaktif
         st.divider()
         st.subheader("📁 Daftar Collection")
