@@ -178,41 +178,31 @@ h4 {
 }
 
 
+
 /* ==========================================
-   ALERT - PERBAIKAN KONTRAS TOTAL
+   ALERT - FIX WARNA TULISAN
 ========================================== */
 
 [data-testid="stAlert"] {
+    background-color: #E0F2FE !important;
+    border: 1px solid #38BDF8 !important;
     border-radius: 12px !important;
-    border: 1px solid #38bdf8 !important;
 }
 
-/* Semua tulisan dalam notifikasi */
 [data-testid="stAlert"] p,
 [data-testid="stAlert"] span,
 [data-testid="stAlert"] div,
-[data-testid="stAlert"] li {
-    color: #172033 !important;
+[data-testid="stAlert"] li,
+[data-testid="stAlert"] [data-testid="stMarkdownContainer"] * {
+    color: #172554 !important;
+    -webkit-text-fill-color: #172554 !important;
     font-size: 16px !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
     line-height: 1.7 !important;
 }
 
-/* Pesan success */
-[data-testid="stAlert"][data-baseweb="notification"] {
-    color: #172033 !important;
-}
-
-/* Ikon notifikasi */
 [data-testid="stAlert"] svg {
-    color: #172033 !important;
-    fill: currentColor;
-}
-
-[data-testid="stAlert"] p {
-    color: #ffffff !important;
-    font-size: 16px !important;
-    font-weight: 600;
+    color: #0369A1 !important;
 }
 
 /* METRICS */
